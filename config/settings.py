@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-import sys
+
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
@@ -23,12 +23,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "rest_framework",
     "drf_yasg",
     "rest_framework_simplejwt",
     "corsheaders",
-
     "callboard",
     "users",
 ]
@@ -130,8 +128,8 @@ CSRF_TRUSTED_ORIGINS = [
 
 CORS_ALLOW_ALL_ORIGINS = False
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True

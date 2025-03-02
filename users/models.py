@@ -11,8 +11,9 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, verbose_name="Имя", help_text="Укажите свое имя")
     last_name = models.CharField(max_length=50, verbose_name="Фамилия", help_text="Укажите свою фамилию")
     email = models.EmailField(unique=True, verbose_name="Email", help_text="Укажите email")
-    phone = models.CharField(max_length=15, blank=True, null=True, verbose_name="Телефон",
-                             help_text="Укажите номер телефона")
+    phone = models.CharField(
+        max_length=15, blank=True, null=True, verbose_name="Телефон", help_text="Укажите номер телефона"
+    )
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
     role = models.CharField(max_length=21, choices=ROLE_CHOICES, default="user")
 

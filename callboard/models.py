@@ -7,8 +7,9 @@ class Advertisement(models.Model):
     title = models.CharField(max_length=200, verbose_name="Название товара")
     price = models.PositiveIntegerField()
     description = models.TextField(blank=True, null=True, verbose_name="Описание товара")
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True,
-                               verbose_name="Автор")
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="Автор"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -17,7 +18,7 @@ class Advertisement(models.Model):
     class Meta:
         verbose_name = "Объявление"
         verbose_name_plural = "Объявления"
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
 
 
 class Comment(models.Model):
@@ -29,7 +30,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Отзыв {self.author} к объявлению {self.ad}'
+        return f"Отзыв {self.author} к объявлению {self.ad}"
 
     class Meta:
         verbose_name = "отзыв"
