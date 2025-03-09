@@ -9,11 +9,13 @@ User = get_user_model()
 
 @pytest.fixture
 def api_client():
+    '''Cоздание экземпляра API клиента'''
     return APIClient()
 
 
 @pytest.mark.django_db
 def test_create_user(api_client):
+    '''Проверка регистрации пользователя'''
     url = reverse("users:register")  # Укажите правильный путь
     data = {
         "username": "newuser",
@@ -31,6 +33,7 @@ def test_create_user(api_client):
 
 @pytest.mark.django_db
 def test_delete_user(api_client):
+    '''Проверка удаления пользователя'''
     # Создаем пользователя для удаления
     user = User.objects.create_user(username="deletableuser", email="deleteuser@example.com", password="password123")
     url = reverse("users:user-delete", kwargs={"pk": user.id})  # Укажите правильный путь

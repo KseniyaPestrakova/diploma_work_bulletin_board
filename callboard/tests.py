@@ -11,31 +11,37 @@ User = get_user_model()
 
 @pytest.fixture
 def user():
+    '''Создание обычного пользователя для дальнейшего тестирования'''
     return User.objects.create_user(email="testuser@example.com", username="testuser", password="testpassword")
 
 
 @pytest.fixture
 def admin_user():
+    '''Создание администратора для дальнейшего тестирования'''
     return User.objects.create_superuser(email="admin@example.com", username="admin", password="adminpassword")
 
 
 @pytest.fixture
 def advertisement(user):
+    '''Создание объявления для дальнейшего тестирования'''
     return Advertisement.objects.create(title="Test Ad", price=1000, description="Test Description", author=user)
 
 
 @pytest.fixture
 def comment(user, advertisement):
+    '''Создание комментария для дальнейшего тестирования'''
     return Comment.objects.create(text="Test Comment", ad=advertisement, author=user)
 
 
 @pytest.fixture
 def api_client():
+    '''Cоздание экземпляра API клиента'''
     return APIClient()
 
 
 @pytest.mark.django_db
 def test_create_advertisement(api_client, user):
+    '''Проверка создания объявления'''
     api_client.force_authenticate(user=user)
     url = reverse("callboard:ad-create")  # Используем имя маршрута
     data = {"title": "New Ad", "price": 2000, "description": "New Ad Description"}
@@ -49,6 +55,7 @@ def test_create_advertisement(api_client, user):
 
 @pytest.mark.django_db
 def test_get_advertisement_list(api_client, advertisement):
+    '''Проверка получения списка объявлений'''
     url = reverse("callboard:ad-list")
 
     response = api_client.get(url)
@@ -60,6 +67,7 @@ def test_get_advertisement_list(api_client, advertisement):
 
 @pytest.mark.django_db
 def test_get_advertisement_detail(api_client, advertisement):
+    '''Проверка просмотра конкретного объявления'''
     url = reverse(
         "callboard:ad-get",
         args=[
@@ -77,6 +85,7 @@ def test_get_advertisement_detail(api_client, advertisement):
 
 @pytest.mark.django_db
 def test_update_advertisement(api_client, advertisement, user):
+    '''Проверка изменения объявления'''
     api_client.force_authenticate(user=user)
     url = reverse("callboard:ad-update", args=[advertisement.id])
     data = {"title": "Updated Ad", "price": 3000, "description": "Updated Description"}
@@ -90,6 +99,7 @@ def test_update_advertisement(api_client, advertisement, user):
 
 @pytest.mark.django_db
 def test_delete_advertisement(api_client, advertisement, user):
+    '''Проверка удаления объявления'''
     api_client.force_authenticate(user=user)
     url = reverse("callboard:ad-delete", args=[advertisement.id])
 
@@ -101,6 +111,7 @@ def test_delete_advertisement(api_client, advertisement, user):
 
 @pytest.mark.django_db
 def test_create_comment(api_client, user, advertisement):
+    '''Проверка создания комментария'''
     api_client.force_authenticate(user=user)
     url = reverse("callboard:comment-create")
     data = {"text": "New Comment", "ad": advertisement.id}
@@ -114,6 +125,7 @@ def test_create_comment(api_client, user, advertisement):
 
 @pytest.mark.django_db
 def test_get_comment_list(api_client, comment, user):
+    '''Проверка получения списка комментариев'''
     api_client.force_authenticate(user=user)
     url = reverse("callboard:comment-list")
 
@@ -126,6 +138,7 @@ def test_get_comment_list(api_client, comment, user):
 
 @pytest.mark.django_db
 def test_get_comment_detail(api_client, comment, user):
+    '''Проверка просмотра конкретного комментария'''
     api_client.force_authenticate(user=user)
     url = reverse("callboard:comment-get", args=[comment.id])
 
@@ -137,6 +150,7 @@ def test_get_comment_detail(api_client, comment, user):
 
 @pytest.mark.django_db
 def test_update_comment(api_client, comment, user):
+    '''Проверка изменения комментария'''
     api_client.force_authenticate(user=user)
     url = reverse("callboard:comment-update", args=[comment.id])
     data = {"text": "Updated Comment"}
@@ -149,6 +163,7 @@ def test_update_comment(api_client, comment, user):
 
 @pytest.mark.django_db
 def test_delete_comment(api_client, comment, user):
+    '''Проверка удаления комментария'''
     api_client.force_authenticate(user=user)
     url = reverse("callboard:comment-delete", args=[comment.id])
 

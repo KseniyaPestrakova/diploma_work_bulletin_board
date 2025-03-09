@@ -14,16 +14,19 @@ from users.serializers import UserSerializer
 
 
 class UserCreateAPIView(generics.CreateAPIView):
+    '''Представление для создания нового пользователя.'''
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
     def perform_create(self, serializer):
+        '''Переопределённый метод для создания пользователя и установки пароля.'''
         user = serializer.save(is_active=True)
         user.set_password(user.password)
         user.save()
 
 
 class UserDestroyAPIView(generics.DestroyAPIView):
+    '''Представление для удаления пользователя.'''
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
@@ -33,9 +36,11 @@ token_generator = PasswordResetTokenGenerator()
 
 
 class RequestPasswordResetView(APIView):
+    '''Представление для запроса сброса пароля.'''
     permission_classes = [AllowAny]
 
     def post(self, request):
+        '''Отправляет запрос на сброс пароля на указанный email.'''
         email = request.data.get("email")
         if email:
             user = User.objects.get(email=email)
@@ -55,9 +60,11 @@ class RequestPasswordResetView(APIView):
 
 
 class PasswordResetConfirmView(APIView):
+    '''Представление для подтверждения сброса пароля.'''
     permission_classes = [AllowAny]
 
     def post(self, request):
+        '''Подтверждает сброс пароля, если токен и пользователь действительны'''
         uidb64 = request.data.get("uid")
         token = request.data.get("token")
         new_password = request.data.get("new_password")
